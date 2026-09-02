@@ -1,6 +1,8 @@
 import NavBar from "./NavBar";
 import AbstractGlobe from "./AbstractGlobe";
 import Services from "./Services";
+import InfiniteBanner from "./InfiniteBanner";
+import AboutSection from "./AboutSection";
 
 function App() {
   return (
@@ -251,7 +253,7 @@ function App() {
         className="
           bg-white
           px-6
-          py-24
+          pt-24
           lg:px-8
           scroll-mt-24
         "
@@ -279,11 +281,14 @@ function App() {
           >
             Soluções para sua infraestrutura
           </h2>
-        </div>
-        <div>
+
           <Services />
         </div>
+
+        <InfiniteBanner />
       </section>
+
+      <AboutSection />
     </main>
   );
 }

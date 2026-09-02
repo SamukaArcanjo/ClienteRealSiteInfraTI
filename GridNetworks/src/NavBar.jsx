@@ -49,7 +49,7 @@ function NavBar() {
         {/* Botão (desktop) */}
         <a
           href="#contato"
-          className="hidden rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 md:block"
+          className="hidden rounded-xs bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 md:block"
         >
           Solicitar orçamento
         </a>
