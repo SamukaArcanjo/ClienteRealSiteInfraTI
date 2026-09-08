@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Reveal from "./Reveal";
+import { WHATSAPP_NUMBERS, whatsappLink } from "./whatsapp";
 
 function CableIcon(props) {
   return (
@@ -74,9 +76,6 @@ function CodeIcon(props) {
 
 /* ========================================
    MARCAS ABSTRATAS (card de detalhe)
-   Não são pictogramas literais — são
-   composições geométricas exclusivas
-   pra cada serviço.
    ======================================== */
 
 function CableMark(props) {
@@ -157,47 +156,55 @@ function SystemsMark(props) {
   );
 }
 
-function Services() {
-  const services = [
-    {
-      nome: "Cabeamento e ajustes de ethernet",
-      descricao:
-        "Organizamos e estruturamos o cabeamento de rede da sua empresa, com ajustes finos para eliminar quedas de conexão e lentidão no dia a dia.",
-      Icon: CableIcon,
-      Mark: CableMark,
-    },
-    {
-      nome: "Suporte/montagem/manutenção de computadores, notebooks e servidores",
-      descricao:
-        "Montagem, suporte e manutenção de computadores, notebooks e servidores, mantendo sua operação sempre funcionando sem dor de cabeça.",
-      Icon: ToolIcon,
-      Mark: SupportMark,
-    },
-    {
-      nome: "Instalação de suporte para câmeras",
-      descricao:
-        "Projetamos e instalamos sistemas de câmeras de segurança, dando mais controle, visibilidade e tranquilidade para o seu negócio.",
-      Icon: CameraIcon,
-      Mark: CameraMark,
-    },
-    {
-      nome: "Desenvolvimento de sistemas",
-      descricao:
-        "Criamos sistemas sob medida para resolver problemas específicos da sua empresa, com foco em produtividade e crescimento.",
-      Icon: CodeIcon,
-      Mark: SystemsMark,
-    },
-  ];
+const SERVICES = [
+  {
+    nome: "Cabeamento e ajustes de ethernet",
+    descricao:
+      "Organizamos e estruturamos o cabeamento de rede da sua empresa, com ajustes finos para eliminar quedas de conexão e lentidão no dia a dia.",
+    Icon: CableIcon,
+    Mark: CableMark,
+    whatsapp: WHATSAPP_NUMBERS.geral,
+  },
+  {
+    nome: "Suporte/montagem/manutenção de computadores, notebooks e servidores",
+    descricao:
+      "Montagem, suporte e manutenção de computadores, notebooks e servidores, mantendo sua operação sempre funcionando sem dor de cabeça.",
+    Icon: ToolIcon,
+    Mark: SupportMark,
+    whatsapp: WHATSAPP_NUMBERS.geral,
+  },
+  {
+    nome: "Instalação de suporte para câmeras",
+    descricao:
+      "Projetamos e instalamos sistemas de câmeras de segurança, dando mais controle, visibilidade e tranquilidade para o seu negócio.",
+    Icon: CameraIcon,
+    Mark: CameraMark,
+    whatsapp: WHATSAPP_NUMBERS.geral,
+  },
+  {
+    nome: "Desenvolvimento de sistemas",
+    descricao:
+      "Criamos sistemas sob medida para resolver problemas específicos da sua empresa, com foco em produtividade e crescimento.",
+    Icon: CodeIcon,
+    Mark: SystemsMark,
+    // Único serviço que vai pra um número de WhatsApp diferente.
+    whatsapp: WHATSAPP_NUMBERS.sistemas,
+  },
+];
 
+function Services() {
   const [serviceActive, setServiceActive] = useState(0);
-  const active = services[serviceActive];
+  const active = SERVICES[serviceActive];
   const ActiveMark = active.Mark;
 
+  const linkVerSolucao = whatsappLink(
+    active.whatsapp,
+    `Olá! Tenho interesse em: ${active.nome}`,
+  );
+
   return (
-    <div className="relative overflow-hidden">
-      {/* ========================================
-          FUNDO SUBLIME (pontilhado + brilho leve)
-          ======================================== */}
+    <div className="relative overflow-hidden py-12">
+      {/* Fundo sublime (pontilhado + brilho leve) */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] bg-[size:28px_28px]"
@@ -211,28 +218,26 @@ function Services() {
         className="pointer-events-none absolute -bottom-32 -left-32 -z-10 h-[380px] w-[380px] rounded-full bg-black/[0.03] blur-3xl"
       />
 
-      <div className="grid gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-16">
-        {/* ========================================
-            LISTA DE SERVIÇOS (botões)
-            ======================================== */}
-        <div className="divide-y divide-zinc-200">
-          {services.map((service, index) => {
+      <Reveal className="grid min-w-0 gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-16">
+        {/* Lista de serviços (botões) */}
+        <div className="min-w-0 divide-y divide-zinc-200">
+          {SERVICES.map((service, index) => {
             const isActive = index === serviceActive;
             const Icon = service.Icon;
 
             return (
               <button
-                key={index}
+                key={service.nome}
                 type="button"
                 onClick={() => setServiceActive(index)}
                 aria-pressed={isActive}
-                className={`flex w-full items-center gap-4 border-l-4 py-6 pl-6 pr-2 text-left transition-colors duration-300 ${
+                className={`flex w-full items-center gap-3 border-l-4 py-6 pl-6 pr-2 text-left transition-colors duration-300 sm:gap-4 ${
                   isActive
                     ? "border-red-600"
                     : "border-transparent hover:border-zinc-200"
                 }`}
               >
-                <span className="font-mono text-xs text-zinc-400">
+                <span className="hidden font-mono text-xs text-zinc-400 sm:inline">
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
@@ -246,8 +251,10 @@ function Services() {
                   <Icon className="h-5 w-5" />
                 </span>
 
+                {/* min-w-0 é o que permite esse texto quebrar linha
+                    em vez de estourar a largura da tela no celular */}
                 <span
-                  className={`text-base font-semibold leading-snug transition-colors duration-300 md:text-lg ${
+                  className={`min-w-0 flex-1 text-base font-semibold leading-snug transition-colors duration-300 md:text-lg ${
                     isActive ? "text-red-600" : "text-zinc-900"
                   }`}
                 >
@@ -256,7 +263,7 @@ function Services() {
 
                 <span
                   aria-hidden="true"
-                  className={`ml-auto flex-shrink-0 text-xl transition-all duration-300 ${
+                  className={`flex-shrink-0 text-xl transition-all duration-300 ${
                     isActive
                       ? "translate-x-0 text-red-600"
                       : "-translate-x-1 text-zinc-300"
@@ -269,11 +276,8 @@ function Services() {
           })}
         </div>
 
-        {/* ========================================
-            DETALHE DO SERVIÇO ATIVO
-            ======================================== */}
-        <div className="relative flex flex-col justify-center py-6 lg:border-l lg:border-zinc-200 lg:pl-16">
-          {/* Anéis decorativos atrás do ícone */}
+        {/* Detalhe do serviço ativo */}
+        <div className="relative flex min-w-0 flex-col justify-center py-6 lg:border-l lg:border-zinc-200 lg:pl-16">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute right-4 top-0 h-40 w-40 rounded-full border border-red-600/10"
@@ -289,7 +293,7 @@ function Services() {
 
           <span className="relative mt-6 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-red-600">
             Serviço {String(serviceActive + 1).padStart(2, "0")} /{" "}
-            {String(services.length).padStart(2, "0")}
+            {String(SERVICES.length).padStart(2, "0")}
           </span>
 
           <h3 className="relative mt-3 max-w-sm text-2xl font-bold leading-tight text-zinc-900 md:text-3xl">
@@ -301,14 +305,16 @@ function Services() {
           </p>
 
           <a
-            href="#contato"
+            href={linkVerSolucao}
+            target="_blank"
+            rel="noopener noreferrer"
             className="relative mt-8 inline-flex w-fit items-center gap-2 border-b-2 border-red-600 pb-1 text-sm font-semibold text-red-600 transition-all duration-300 hover:gap-3"
           >
             Ver solução
             <span aria-hidden="true">→</span>
           </a>
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

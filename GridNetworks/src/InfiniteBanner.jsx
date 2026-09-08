@@ -26,7 +26,7 @@ function MarqueeContent() {
 
 function InfiniteBanner() {
   return (
-    <div className="relative -mx-6 mt-24 flex h-[100px] items-center overflow-hidden bg-red-600 lg:-mx-8">
+    <div className="relative -mx-6 mt-auto flex h-[100px] items-center overflow-hidden bg-red-600 lg:-mx-8">
       <div className="animate-marquee flex w-max">
         <MarqueeContent />
         <MarqueeContent />

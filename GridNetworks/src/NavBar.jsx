@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import logo from "./assets/logo.png";
+import { NAV_LINKS } from "./navLinks";
+import { WHATSAPP_NUMBERS, whatsappLink } from "./whatsapp";
 
-const LINKS = [
-  { href: "#inicio", label: "Início" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#sobre", label: "Sobre" },
-  { href: "#contato", label: "Contato" },
-];
+const orcamentoLink = whatsappLink(
+  WHATSAPP_NUMBERS.geral,
+  "Olá! Gostaria de solicitar um orçamento.",
+);
 
 function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ function NavBar() {
   }, [menuOpen]);
 
   return (
-    <header className="absolute top-0 left-0 z-50 w-full">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-white/5 bg-[#080808]/80 backdrop-blur-md">
       <nav
         aria-label="Navegação principal"
         className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8"
@@ -34,7 +34,7 @@ function NavBar() {
 
         {/* Links (desktop) */}
         <ul className="hidden items-center gap-10 font-bold md:flex">
-          {LINKS.map(({ href, label }) => (
+          {NAV_LINKS.map(({ href, label }) => (
             <li key={href}>
               <a
                 href={href}
@@ -44,12 +44,24 @@ function NavBar() {
               </a>
             </li>
           ))}
+          <li>
+            <a
+              href={orcamentoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded text-sm font-medium text-white transition hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            >
+              Contato
+            </a>
+          </li>
         </ul>
 
         {/* Botão (desktop) */}
         <a
-          href="#contato"
-          className="hidden rounded-xs bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 md:block"
+          href={orcamentoLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden rounded-lg bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-700 md:block"
         >
           Solicitar orçamento
         </a>
@@ -88,7 +100,7 @@ function NavBar() {
           className="border-t border-white/10 bg-[#080808]/98 px-6 py-6 backdrop-blur-sm md:hidden"
         >
           <ul className="flex flex-col gap-6">
-            {LINKS.map(({ href, label }) => (
+            {NAV_LINKS.map(({ href, label }) => (
               <li key={href}>
                 <a
                   href={href}
@@ -101,7 +113,9 @@ function NavBar() {
             ))}
             <li>
               <a
-                href="#contato"
+                href={orcamentoLink}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMenuOpen(false)}
                 className="block rounded-lg bg-red-600 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-red-700"
               >
